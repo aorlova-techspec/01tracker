@@ -22,6 +22,19 @@ npm run smoke    # сборка + сценарии ТЗ в headless Chrome + с�
 `01-first-run.png`, `02-mobile.png`, `03-final-desktop.png`, `04-all-done.png`,
 `05-projects-export.png`.
 
+## Публикация
+
+- Репозиторий: https://github.com/aorlova-techspec/01tracker
+- Приложение: **https://aorlova-techspec.github.io/01tracker/**
+
+Деплой автоматический: `vite.config.js` задаёт `base: "./"` (пути работают на GitHub Pages),
+а workflow `.github/workflows/deploy.yml` при пуше в `main` запускает `npm ci` → `npm test` →
+`npm run build` и публикует `dist/` через GitHub Actions (источник Pages — Actions).
+
+На телефоне: открыть ссылку, меню браузера → «На экран Домой» — приложение появится
+как иконка и будет открываться на весь экран. Данные хранятся в `localStorage`
+конкретного устройства/браузера.
+
 ## Структура
 
 ```
@@ -61,8 +74,8 @@ src/
 
 ## Осталось подготовить (по п. «Что подготовить после сборки»)
 
-- [ ] ссылка на GitHub;
-- [ ] публичная ссылка на приложение (GitHub Pages / Netlify);
+- [x] ссылка на GitHub;
+- [x] публичная ссылка на приложение (GitHub Pages / Netlify);
 - [x] скриншот первого запуска;
 - [x] скриншот финальной версии;
 - [ ] список найденных ошибок и доработок;
