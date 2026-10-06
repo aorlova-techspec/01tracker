@@ -26,7 +26,7 @@ export default function ProjectsBlock({ projects, usedProjects, onAdd, onRemove 
   const [name, setName] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const trimmed = name.trim();
 
@@ -35,7 +35,7 @@ export default function ProjectsBlock({ projects, usedProjects, onAdd, onRemove 
       return;
     }
 
-    const result = onAdd(trimmed);
+    const result = await onAdd(trimmed);
     if (result.duplicate) {
       setError("Такой проект уже есть в словаре.");
       return;

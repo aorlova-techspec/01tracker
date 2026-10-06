@@ -60,13 +60,17 @@ export default function TaskItem({
     setError("");
   };
 
-  const saveEditing = (event) => {
+  const saveEditing = async (event) => {
     event.preventDefault();
     if (!title.trim()) {
       setError("Название задачи не может быть пустым.");
       return;
     }
-    onUpdate({ title, description, project, deadline });
+    const saved = await onUpdate({ title, description, project, deadline });
+    if (saved === false) {
+      setError("Не удалось сохранить изменения. Попробуйте ещё раз.");
+      return;
+    }
     setEditing(false);
     setError("");
   };

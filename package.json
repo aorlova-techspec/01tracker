@@ -7,10 +7,11 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "node --test src/utils/tasks.test.js src/utils/projects.test.js",
+    "test": "node --test src/utils/tasks.test.js src/utils/projects.test.js src/utils/rows.test.js",
     "smoke": "vite build && node scripts/smoke.mjs"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.117.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "xlsx": "^0.18.5"

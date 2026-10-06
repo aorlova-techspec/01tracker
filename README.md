@@ -22,6 +22,25 @@ npm run smoke    # сборка + сценарии ТЗ в headless Chrome + с�
 `01-first-run.png`, `02-mobile.png`, `03-final-desktop.png`, `04-all-done.png`,
 `05-projects-export.png`.
 
+## Аккаунты и облако (Supabase)
+
+Режим без входа (данные в `localStorage`) продолжает работать. Если пользователь нажал
+«Войти» — задачи и словарь проектов хранятся в Supabase, синхронизируются между
+устройствами и видны только владельцу (Row Level Security).
+
+Настройка:
+
+1. Создай проект на supabase.com, выполни `supabase/schema.sql` в SQL Editor.
+2. Рекомендуется выключить подтверждение почты:
+   Authentication → Sign In / Providers → Email → **Confirm email = off**.
+3. Локально: скопируй `.env.example` → `.env`, подставь `VITE_SUPABASE_URL` и
+   `VITE_SUPABASE_ANON_KEY` (Settings → API).
+4. Для деплоя те же значения заданы секретами репозитория
+   (`gh secret set VITE_SUPABASE_URL ...`), в код они не попадают.
+
+При первом входе с устройства, где уже были локальные задачи, они автоматически
+импортируются в аккаунт (если облако пустое).
+
 ## Публикация
 
 - Репозиторий: https://github.com/aorlova-techspec/01tracker
@@ -40,13 +59,18 @@ npm run smoke    # сборка + сценарии ТЗ в headless Chrome + с�
 ```
 src/
   App.jsx                 # состояние приложения, обработчики, layout
+  lib/supabase.js         # клиент Supabase (из переменных окружения)
+  hooks/useAuth.js        # сессия: вход, регистрация, выход
   hooks/useLocalStorage.js# чтение/запись + обработка ошибок хранилища
   utils/tasks.js          # модель данных (проект, дедлайн), фильтры, статистика
   utils/projects.js       # словарь проектов
+  utils/rows.js           # маппинг задач в строки базы + тексты ошибок
   utils/export.js         # выгрузка задач в .xlsx
   utils/date.js           # форматирование дат
+  supabase/schema.sql     # таблицы и политики доступа (RLS)
   components/
-    Header.jsx            # шапка: название, дата, слоган
+    Header.jsx            # шапка: название, дата, слоган, аккаунт
+    AuthModal.jsx         # окно входа/регистрации
     StatsCards.jsx        # 4 карточки статистики + progress bar
     AddTaskForm.jsx       # форма добавления: название, описание, проект, дедлайн
     ProjectsBlock.jsx     # словарь проектов: добавление/удаление

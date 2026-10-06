@@ -11,7 +11,7 @@ export default function AddTaskForm({ onAdd, projectOptions }) {
   const [deadline, setDeadline] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const trimmedTitle = title.trim();
 
@@ -20,7 +20,7 @@ export default function AddTaskForm({ onAdd, projectOptions }) {
       return;
     }
 
-    const result = onAdd({ title: trimmedTitle, description, project, deadline });
+    const result = await onAdd({ title: trimmedTitle, description, project, deadline });
     if (result === false) {
       setError("Не удалось добавить задачу. Попробуйте ещё раз.");
       return;
