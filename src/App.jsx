@@ -6,7 +6,7 @@ import ProjectsBlock from "./components/ProjectsBlock.jsx";
 import Filters from "./components/Filters.jsx";
 import ExportButton from "./components/ExportButton.jsx";
 import TaskList from "./components/TaskList.jsx";
-import AuthModal from "./components/AuthModal.jsx";
+import WelcomeScreen from "./components/WelcomeScreen.jsx";
 import { useLocalStorage } from "./hooks/useLocalStorage.js";
 import { useAuth } from "./hooks/useAuth.js";
 import { supabase } from "./lib/supabase.js";
@@ -28,11 +28,13 @@ import {
   removeProject,
 } from "./utils/projects.js";
 import { errorMessage, taskFromRow, taskToRow } from "./utils/rows.js";
+import logo from "./assets/logo.png";
+
+const GUEST_KEY = "daily-task-tracker:guest";
 
 export default function App() {
   const [notice, setNotice] = useState("");
   const [filter, setFilter] = useState("all");
-  const [authOpen, setAuthOpen] = useState(false);
   const [loadingCloud, setLoadingCloud] = useState(false);
   const [cloudTasks, setCloudTasks] = useState([]);
   const [cloudProjects, setCloudProjects] = useState([]);
@@ -60,7 +62,8 @@ export default function App() {
     validate: normalizeProjects,
   });
 
-  const { user, signIn, signUp, signOut, configured } = useAuth();
+  const { user, signIn, signUp, signOut, configured, ready } = useAuth();
+  const [guest, setGuest] = useLocalStorage(GUEST_KEY, false);
   const isCloud = Boolean(user);
 
   const tasks = isCloud ? cloudTasks : localTasks;
@@ -274,13 +277,33 @@ export default function App() {
     [isCloud, notify, setLocalProjects]
   );
 
+  if (configured && !ready) {
+    return (
+      <div className="welcome welcome--splash" role="status">
+        <img className="welcome__logo" src={logo} alt="" width="72" height="72" />
+        <p className="welcome__splash-text">Проверяем сессию…</p>
+      </div>
+    );
+  }
+
+  if (configured && !user && !guest) {
+    return (
+      <WelcomeScreen
+        signIn={signIn}
+        signUp={signUp}
+        onAuthenticated={() => setGuest(false)}
+        onGuest={() => setGuest(true)}
+      />
+    );
+  }
+
   return (
     <div className="app">
       <div className="app__container">
         <Header
           configured={configured}
           user={user}
-          onSignIn={() => setAuthOpen(true)}
+          onSignIn={() => setGuest(false)}
           onSignOut={signOut}
         />
 
@@ -337,10 +360,6 @@ export default function App() {
             : "Данные хранятся локально в вашем браузере (localStorage) — доступны только вам."}
         </footer>
       </div>
-
-      {authOpen && (
-        <AuthModal signIn={signIn} signUp={signUp} onClose={() => setAuthOpen(false)} />
-      )}
     </div>
   );
 }

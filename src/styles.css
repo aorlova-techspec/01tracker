@@ -850,7 +850,7 @@ input {
   font-size: 0.82rem;
 }
 
-/* ---------- Account & auth modal ---------- */
+/* ---------- Account ---------- */
 
 .header__aside {
   display: flex;
@@ -884,38 +884,153 @@ input {
   font-weight: 600;
 }
 
-.modal {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
+/* ---------- Welcome (auth gate) ---------- */
+
+.welcome {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
+  padding: 40px 24px;
+  background-color: #0b1533;
+  background-size: cover;
+  background-position: center;
 }
 
-.modal__backdrop {
+.welcome__overlay {
   position: absolute;
   inset: 0;
-  background: rgba(20, 27, 47, 0.55);
-  backdrop-filter: blur(3px);
+  background: linear-gradient(
+    135deg,
+    rgba(9, 16, 45, 0.94) 0%,
+    rgba(23, 47, 120, 0.88) 55%,
+    rgba(11, 23, 62, 0.94) 100%
+  );
 }
 
-.modal__card {
+.welcome__inner {
   position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(320px, 420px);
+  gap: 48px;
+  align-items: center;
   width: 100%;
-  max-width: 420px;
-  max-height: calc(100vh - 32px);
-  overflow-y: auto;
-  padding: 22px;
+  max-width: 1080px;
+  color: #fff;
 }
 
-.modal__head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.welcome__intro {
+  min-width: 0;
+}
+
+.welcome__logo {
+  display: block;
+  margin-bottom: 18px;
+  filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.45));
+}
+
+.welcome__title {
+  margin: 0 0 8px;
+  font-size: clamp(1.9rem, 4vw, 2.7rem);
+  line-height: 1.1;
+}
+
+.welcome__tagline {
+  margin: 0 0 14px;
+  color: #9db8ff;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.welcome__text {
+  margin: 0 0 24px;
+  max-width: 54ch;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.6;
+}
+
+.welcome__features {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
   gap: 12px;
-  margin-bottom: 16px;
+}
+
+.welcome__feature {
+  display: flex;
+  gap: 10px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.welcome__feature strong {
+  color: #fff;
+}
+
+.welcome__check {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  margin-top: 2px;
+  border-radius: 50%;
+  background: rgba(99, 181, 255, 0.16);
+  color: #8fd0ff;
+  border: 1px solid rgba(143, 208, 255, 0.35);
+}
+
+.welcome__card {
+  padding: 26px;
+  color: var(--text);
+}
+
+.welcome__card-title {
+  margin: 0 0 4px;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.welcome__card-subtitle {
+  margin: 0 0 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.welcome__guest {
+  display: block;
+  width: 100%;
+  margin-top: 14px;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--accent-strong);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.welcome__guest:hover {
+  background: var(--accent-soft);
+}
+
+.welcome--splash {
+  flex-direction: column;
+  gap: 16px;
+  background-image: linear-gradient(135deg, #09102d 0%, #172f78 55%, #0b173e 100%);
+}
+
+.welcome__splash-text {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .tabs {
@@ -1079,7 +1194,24 @@ input {
     max-width: 100%;
   }
 
-  .modal__card {
+  .welcome {
+    padding: 26px 16px;
+  }
+
+  .welcome__inner {
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+
+  .welcome__text {
+    font-size: 0.93rem;
+  }
+
+  .welcome__features {
+    gap: 10px;
+  }
+
+  .welcome__card {
     padding: 18px;
   }
 

@@ -103,6 +103,22 @@ const run = async () => {
       }
     });
 
+    checkName = "0. экран входа";
+    await page.goto(URL, { waitUntil: "networkidle0" });
+    const welcome = await page.$(".welcome");
+    if (welcome) {
+      check(Boolean(await page.$("#auth-email")), "показана форма входа/регистрации");
+      check(!(await page.$(".app__container")), "трекер скрыт до входа");
+      const welcomeTitle = await page.$eval(".welcome__title", (el) => el.textContent.trim());
+      check(welcomeTitle === "Daily Task Tracker", "название и описание на фоне");
+      check(Boolean(await page.$(".welcome__features")), "показаны преимущества продукта");
+      await page.screenshot({ path: path.join(shotsDir, "06-welcome.png") });
+      await page.evaluate(() => localStorage.setItem("daily-task-tracker:guest", "1"));
+      await page.reload({ waitUntil: "networkidle0" });
+    } else {
+      console.log("  skip 0. экран входа: в этой сборке Supabase не настроен");
+    }
+
     checkName = "1. пустой старт";
     await page.goto(URL, { waitUntil: "networkidle0" });
     const emptyText = await page.$eval(".empty", (node) => node.textContent);
